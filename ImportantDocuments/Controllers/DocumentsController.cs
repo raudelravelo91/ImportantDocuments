@@ -52,7 +52,7 @@ namespace ImportantDocuments.Controllers
             var docDB = await _docService.AddDocAsync(doc);
 
             doc = await _docService.GetDocByIdAsync(docDB.Id);
-            var docReadDTO = _mapper.Map<DocumentReadDTO>(doc);
+            var docReadDTO = _mapper.Map<DocumentDTO>(doc);
 
             return Created($"api/docs/{doc.Id}", docReadDTO);
         }
