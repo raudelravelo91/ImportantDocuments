@@ -35,7 +35,7 @@ namespace ImportantDocuments.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error saving tag in {nameof(AddTagAsync)}", ex);
+                _logger.LogError($"Error adding tag in {nameof(AddTagAsync)}", ex);
                 throw;
             }
         }

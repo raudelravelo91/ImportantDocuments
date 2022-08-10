@@ -34,7 +34,7 @@ namespace ImportantDocuments.Controllers
         }
 
         // GET: api/docs/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}", Name = "GetDocumentById")]
         public async Task<ActionResult<Document>> GetDoc([FromRoute] int id)
         {
             var doc = await _docService.GetDocByIdAsync(id);
@@ -54,7 +54,7 @@ namespace ImportantDocuments.Controllers
             doc = await _docService.GetDocByIdAsync(docDB.Id);
             var docReadDTO = _mapper.Map<DocumentDTO>(doc);
 
-            return Created($"api/docs/{doc.Id}", docReadDTO);
+            return CreatedAtRoute("GetDocumentById", new { id = docDB.Id }, docReadDTO);
         }
     }
 }
