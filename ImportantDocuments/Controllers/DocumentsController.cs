@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using ImportantDocuments.Domain;
 using ImportantDocuments.DTOs;
-using ImportantDocuments.Exceptions;
 using ImportantDocuments.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImportantDocuments.Controllers

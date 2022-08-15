@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ImportantDocuments.API;
+using ImportantDocuments.API.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using ImportantDocuments.Domain;
-using ImportantDocuments.Exceptions;
-using ImportantDocuments.DTOs;
 
 namespace ImportantDocuments.Services
 {
@@ -46,15 +46,13 @@ namespace ImportantDocuments.Services
         private async Task<List<Tag>> AddTagsAsync(Document doc)
         {
             var tags = new List<Tag>();
-            
-            if (doc.Tags.Count > 0)
+
+            if (doc.Tags.Count <= 0) return tags;
+            foreach (var tag in doc.Tags)
             {
-                foreach (var tag in doc.Tags)
-                {
-                    var tagDB = await _tagService.AddTagAsync(tag);
-                    _logger.LogInformation($"Tag {tag.Name} added for: {doc.Name}");
-                    tags.Add(tagDB);
-                }
+                var tagDB = await _tagService.AddTagAsync(tag);
+                _logger.LogInformation($"Tag {tag.Name} added for: {doc.Name}");
+                tags.Add(tagDB);
             }
 
             return tags;
