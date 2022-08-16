@@ -15,7 +15,6 @@ public class LoggingMiddleware
  
     public async Task Invoke(HttpContext context)
     {
-        context.Items["TraceID"] = Guid.NewGuid().ToString();
         _logger.LogInformation($"About to start {context.Request.Method} {context.Request.GetDisplayUrl()} request");
  
         await _next(context);
