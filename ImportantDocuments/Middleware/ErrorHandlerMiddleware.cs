@@ -15,6 +15,7 @@ public class ErrorHandlerMiddleware
 
     public async Task Invoke(HttpContext context)
     {
+        // TODO: a lot missing here: all the error to response stuff.
         try
         {
             await _next(context);
@@ -26,7 +27,7 @@ public class ErrorHandlerMiddleware
 
             switch (error)
             {
-                case AppException ex:
+                case ApiException ex:
                     // custom application error
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;

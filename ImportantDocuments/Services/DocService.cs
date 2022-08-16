@@ -78,7 +78,8 @@ namespace ImportantDocuments.Services
             
             if (doc == null)
             {
-                throw new AppException($"Doc not found. Doc id: {id}");
+                // TODO: don't throw Exception, we should be wrapping all unhandled exceptions into our custom ones.
+                throw new Exception($"Doc not found. Doc id: {id}");
             }
 
             return doc;

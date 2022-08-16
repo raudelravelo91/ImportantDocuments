@@ -62,7 +62,8 @@ namespace ImportantDocuments.Services
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new AppException($"Tag name can not be null or empty.");
+                // TODO: don't throw Exception, we should be wrapping all unhandled exceptions into our custom ones.
+                throw new Exception($"Tag name can not be null or empty.");
             }
 
             var tag = await _context.Tags
@@ -71,7 +72,8 @@ namespace ImportantDocuments.Services
 
             if (tag == null)
             {
-                throw new AppException($"Tag not found. Tag name: {name}");
+                // TODO: don't throw Exception, we should be wrapping all unhandled exceptions into our custom ones.
+                throw new Exception($"Tag not found. Tag name: {name}");
             }
 
             return tag;
@@ -85,7 +87,7 @@ namespace ImportantDocuments.Services
 
             if (tag == null)
             {
-                throw new AppException($"Tag not found. Tag id: {id}");
+                throw new Exception($"Tag not found. Tag id: {id}");
             }
 
             return tag;
