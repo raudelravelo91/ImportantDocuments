@@ -1,8 +1,8 @@
-﻿namespace ImportantDocuments.Middlewares;
-
-using ImportantDocuments.Exceptions;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using ImportantDocuments.API.Exceptions;
+
+namespace ImportantDocuments.API.Middleware;
 
 public class ErrorHandlerMiddleware
 {

@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ImportantDocuments.API;
+using ImportantDocuments.API.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using ImportantDocuments.Domain;
-using ImportantDocuments.Exceptions;
 
 namespace ImportantDocuments.Services
 {
@@ -27,11 +28,9 @@ namespace ImportantDocuments.Services
                     _logger.LogInformation($"Changes Saved in {nameof(AddTagAsync)}");
                     return tagDB.Entity;
                 }
-                else
-                {
-                    _logger.LogInformation($"Tag not added as it already existed: {tag.Name}");
-                    return await GetTagByNameAsync(tag.Name);
-                }
+
+                _logger.LogInformation($"Tag not added as it already existed: {tag.Name}");
+                return await GetTagByNameAsync(tag.Name);
             }
             catch (Exception ex)
             {
