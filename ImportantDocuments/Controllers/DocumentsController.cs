@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ImportantDocuments.API.DTOs;
+using ImportantDocuments.API.Services;
 using ImportantDocuments.Domain;
 using ImportantDocuments.DTOs;
 using ImportantDocuments.Services;
@@ -25,7 +27,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Document>>> GetDocs()
         {
-            var docs = await _docService.GetAllDocsAsync();
+            var docs = await _docService.GetAll();
             var docDTOs = docs.ToList().Select(_mapper.Map<Document, DocumentReadDTO>);
 
             return Ok(docDTOs);
@@ -35,7 +37,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet("{id:int}", Name = "GetDocumentById")]
         public async Task<ActionResult<Document>> GetDoc([FromRoute] int id)
         {
-            var doc = await _docService.GetDocByIdAsync(id);
+            var doc = await _docService.GetById(id);
             var docDTO = _mapper.Map<DocumentDTO>(doc);
 
             return Ok(docDTO);
@@ -44,15 +46,34 @@ namespace ImportantDocuments.Controllers
         // POST: api/docs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocumentDTO>> PostTag(DocumentCreationDTO docCreationDTO)
+        public async Task<ActionResult<DocumentDTO>> PostDoc(DocumentCreationDTO docCreationDTO)
         {
             var doc = _mapper.Map<Document>(docCreationDTO);
-            var docDB = await _docService.AddDocAsync(doc);
+            var docDb = await _docService.AddDocAsync(doc);
+            
+            var docReadDto = _mapper.Map<DocumentDTO>(docDb);
 
-            doc = await _docService.GetDocByIdAsync(docDB.Id);
-            var docReadDTO = _mapper.Map<DocumentDTO>(doc);
+            return CreatedAtRoute("GetDocumentById", new { id = docDb.Id }, docReadDto);
+        }
 
-            return CreatedAtRoute("GetDocumentById", new { id = docDB.Id }, docReadDTO);
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteDoc(int id)
+        {
+            await _docService.Delete(id);
+            return Ok();
+        }
+        
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> PutDoc(int id, DocumentPutDto docPutDto)
+        {
+            if (id != docPutDto.Id)
+                return BadRequest();
+            
+            var doc = _mapper.Map<Document>(docPutDto);
+            var docDb = await _docService.Update(doc);
+            var docReadDto = _mapper.Map<DocumentDTO>(docDb);
+            return Ok(docReadDto);
         }
     }
 }

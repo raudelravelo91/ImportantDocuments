@@ -7,10 +7,10 @@ namespace ImportantDocuments.Services
 {
     public class TagService : ITagService
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
         private readonly ILogger _logger;
 
-        public TagService(AppDbContext context, ILogger<TagService> logger)
+        public TagService(IAppDbContext context, ILogger<TagService> logger)
         {
             _context = context;
             _logger = logger;
@@ -24,7 +24,7 @@ namespace ImportantDocuments.Services
                 {
                     var tagDB = await _context.Tags.AddAsync(tag);
                     _logger.LogInformation($"Tag added: {tag.Name}");
-                    await _context.SaveChangesAsync();
+                    await _context.Complete();
                     _logger.LogInformation($"Changes Saved in {nameof(AddTagAsync)}");
                     return tagDB.Entity;
                 }

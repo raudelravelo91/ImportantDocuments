@@ -1,12 +1,10 @@
 ﻿using ImportantDocuments.Domain;
 
-namespace ImportantDocuments.Services
+namespace ImportantDocuments.API.Services
 {
-    public interface IDocService
+    public interface IDocService : IBaseService<Document>
     {
         public Task<Document> AddDocAsync(Document doc);
-        public Task<IEnumerable<Document>> GetAllDocsAsync();
         public Task<bool> ContainsDocByIdAsync(int id);
-        public Task<Document> GetDocByIdAsync(int id);
     }
 }

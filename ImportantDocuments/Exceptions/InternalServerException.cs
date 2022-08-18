@@ -13,7 +13,10 @@ public class InternalServerException : ApiException
     /// Constructor with innerException
     /// </summary>
     /// <param name="message"></param>
+    /// <param name="innerException"></param>
     public InternalServerException(string message = GenericMessage, Exception innerException = null)
-        : base(HttpStatusCode.InternalServerError, "Internal Server Error", (int)ApiErrorCode.ResourceNotAvailable, message, innerException)
-    { }
+        : base(HttpStatusCode.InternalServerError, "Internal Server Error", (int) ApiErrorCode.ResourceNotAvailable,
+            message, innerException)
+    {
+    }
 }

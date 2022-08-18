@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using ImportantDocuments.API.DTOs;
 using ImportantDocuments.Domain;
 using ImportantDocuments.DTOs;
 
-namespace ImportantDocuments.Utilities
+namespace ImportantDocuments.API.Utilities
 {
     public class AutoMapperProfile: Profile
     {
@@ -15,6 +16,8 @@ namespace ImportantDocuments.Utilities
             CreateMap<DocumentCreationDTO, Document>();
             CreateMap<Document, DocumentDTO>();
             CreateMap<Document, DocumentReadDTO>();
+            CreateMap<Document, DocumentPutDto>();
+            CreateMap<DocumentPutDto, Document>();
             CreateMap<Tag, DocTagDTO>();
         }
     }

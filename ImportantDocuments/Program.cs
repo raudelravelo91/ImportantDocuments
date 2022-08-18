@@ -5,6 +5,7 @@ using ImportantDocuments.Services;
 using System.Text.Json.Serialization;
 using ImportantDocuments.API;
 using ImportantDocuments.API.Middleware;
+using ImportantDocuments.API.Services;
 using NLog;
 using NLog.Web;
 
@@ -30,6 +31,7 @@ try
     });
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IDocService, DocService>();
+    builder.Services.AddScoped<IAppDbContext, AppDbContext>();
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     var app = builder.Build();
