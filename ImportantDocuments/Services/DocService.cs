@@ -31,7 +31,7 @@ namespace ImportantDocuments.Services
                 doc.Tags.Clear();
                 doc.Tags.AddRange(tags);
 
-                var docDB = await base.Insert(doc);
+                var docDB = await InsertAsync(doc);
                 _logger.LogInformation($"Changes Saved in {nameof(AddDocAsync)}");
                 return docDB;
             }

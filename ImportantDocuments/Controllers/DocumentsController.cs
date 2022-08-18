@@ -27,7 +27,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Document>>> GetDocs()
         {
-            var docs = await _docService.GetAll();
+            var docs = await _docService.GetAllAsync();
             var docDTOs = docs.ToList().Select(_mapper.Map<Document, DocumentReadDTO>);
 
             return Ok(docDTOs);
@@ -37,7 +37,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet("{id:int}", Name = "GetDocumentById")]
         public async Task<ActionResult<Document>> GetDoc([FromRoute] int id)
         {
-            var doc = await _docService.GetById(id);
+            var doc = await _docService.GetByIdAsync(id);
             var docDTO = _mapper.Map<DocumentDTO>(doc);
 
             return Ok(docDTO);
@@ -60,7 +60,7 @@ namespace ImportantDocuments.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteDoc(int id)
         {
-            await _docService.Delete(id);
+            await _docService.DeleteAsync(id);
             return Ok();
         }
         
@@ -71,7 +71,7 @@ namespace ImportantDocuments.Controllers
                 return BadRequest();
             
             var doc = _mapper.Map<Document>(docPutDto);
-            var docDb = await _docService.Update(doc);
+            var docDb = await _docService.UpdateAsync(doc);
             var docReadDto = _mapper.Map<DocumentDTO>(docDb);
             return Ok(docReadDto);
         }

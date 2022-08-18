@@ -16,7 +16,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
     public abstract DbSet<TEntity> GetDbSet();
     
 
-    public virtual async Task<TEntity> Insert(TEntity obj)
+    public virtual async Task<TEntity> InsertAsync(TEntity obj)
     {
         var dbSet = GetDbSet();
         dbSet.Add(obj);
@@ -30,12 +30,12 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         throw new NotImplementedException();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAll()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await GetDbSet().ToListAsync();
     }
 
-    public virtual async Task<TEntity> GetById(params object[] pk)
+    public virtual async Task<TEntity> GetByIdAsync(params object[] pk)
     {
         var dbSet = GetDbSet();
         var obj = await dbSet.FindAsync(pk);
@@ -45,7 +45,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         return obj;
     }
 
-    public virtual async Task<TEntity> Update(TEntity obj)
+    public virtual async Task<TEntity> UpdateAsync(TEntity obj)
     {
         var dbSet = GetDbSet();
         dbSet.Update(obj);
@@ -55,10 +55,10 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         return obj;
     }
 
-    public virtual async Task Delete(params object[] pk)
+    public virtual async Task DeleteAsync(params object[] pk)
     {
         var _dbSet = GetDbSet();
-        var obj = await GetById(pk);
+        var obj = await GetByIdAsync(pk);
         _dbSet.Remove(obj);
 
         await _context.Complete();
