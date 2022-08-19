@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ImportantDocuments.Domain;
+using ImportantDocuments.API.Domain;
 using ImportantDocuments.Services;
 using ImportantDocuments.DTOs;
 using AutoMapper;
