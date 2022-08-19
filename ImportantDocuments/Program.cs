@@ -4,9 +4,11 @@ using ImportantDocuments.Controllers;
 using ImportantDocuments.Services;
 using System.Text.Json.Serialization;
 using ImportantDocuments.API;
+using ImportantDocuments.API.Services;
 using ImportantDocuments.API.Middleware;
 using NLog;
 using NLog.Web;
+using ImportantDocuments.API.Domain;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -28,8 +30,11 @@ try
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
+    builder.Services.AddScoped<IBaseService<Document>, BaseService<Document>>();
+    builder.Services.AddScoped<IBaseService<Tag>, BaseService<Tag>>();
     builder.Services.AddScoped<ITagService, TagService>();
     builder.Services.AddScoped<IDocService, DocService>();
+    builder.Services.AddScoped<IAppDbContext, AppDbContext>();
     builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
     var app = builder.Build();

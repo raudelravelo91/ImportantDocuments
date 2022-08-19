@@ -1,4 +1,4 @@
-﻿using ImportantDocuments.Domain;
+﻿using ImportantDocuments.API.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImportantDocuments.API

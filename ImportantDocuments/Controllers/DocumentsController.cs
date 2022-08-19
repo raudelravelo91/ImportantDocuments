@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ImportantDocuments.Domain;
+using ImportantDocuments.API.Domain;
 using ImportantDocuments.DTOs;
-using ImportantDocuments.Services;
+using ImportantDocuments.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImportantDocuments.Controllers
@@ -13,6 +13,7 @@ namespace ImportantDocuments.Controllers
         private readonly ILogger<DocumentsController> _logger;
         private readonly IDocService _docService;
         private readonly IMapper _mapper;
+        
 
         public DocumentsController(IDocService docService, ILogger<DocumentsController> logger, IMapper mapper)
         {
@@ -25,7 +26,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Document>>> GetDocs()
         {
-            var docs = await _docService.GetAllDocsAsync();
+            var docs = await _docService.GetAllAsync();
             var docDTOs = docs.ToList().Select(_mapper.Map<Document, DocumentReadDTO>);
 
             return Ok(docDTOs);
@@ -35,7 +36,7 @@ namespace ImportantDocuments.Controllers
         [HttpGet("{id:int}", Name = "GetDocumentById")]
         public async Task<ActionResult<Document>> GetDoc([FromRoute] int id)
         {
-            var doc = await _docService.GetDocByIdAsync(id);
+            var doc = await _docService.GetByIdAsync(id);
             var docDTO = _mapper.Map<DocumentDTO>(doc);
 
             return Ok(docDTO);
@@ -47,9 +48,9 @@ namespace ImportantDocuments.Controllers
         public async Task<ActionResult<DocumentDTO>> PostTag(DocumentCreationDTO docCreationDTO)
         {
             var doc = _mapper.Map<Document>(docCreationDTO);
-            var docDB = await _docService.AddDocAsync(doc);
+            var docDB = await _docService.InsertAsync(doc);
 
-            doc = await _docService.GetDocByIdAsync(docDB.Id);
+            doc = await _docService.GetByIdAsync(docDB.Id);
             var docReadDTO = _mapper.Map<DocumentDTO>(doc);
 
             return CreatedAtRoute("GetDocumentById", new { id = docDB.Id }, docReadDTO);

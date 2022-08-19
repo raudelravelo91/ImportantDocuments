@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ImportantDocuments.Domain;
+using ImportantDocuments.API.Domain;
 using ImportantDocuments.DTOs;
 
 namespace ImportantDocuments.Utilities

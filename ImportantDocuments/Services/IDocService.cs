@@ -1,12 +1,8 @@
-﻿using ImportantDocuments.Domain;
+﻿using ImportantDocuments.API.Domain;
 
-namespace ImportantDocuments.Services
+namespace ImportantDocuments.API.Services;
+
+public interface IDocService: IBaseService<Document>
 {
-    public interface IDocService
-    {
-        public Task<Document> AddDocAsync(Document doc);
-        public Task<IEnumerable<Document>> GetAllDocsAsync();
-        public Task<bool> ContainsDocByIdAsync(int id);
-        public Task<Document> GetDocByIdAsync(int id);
-    }
+    public Task<bool> ContainsDocByIdAsync(int id);
 }
