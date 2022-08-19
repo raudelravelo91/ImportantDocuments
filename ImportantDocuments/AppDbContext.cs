@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImportantDocuments.API
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IAppDbContext
     {
         private readonly ILogger<AppDbContext> _logger;
         public AppDbContext(DbContextOptions options, ILogger<AppDbContext> logger) : base(options)
@@ -63,6 +63,10 @@ namespace ImportantDocuments.API
             );
         }
 
+        public async Task CompleteAsync()
+        {
+            await SaveChangesAsync();
+        }
 
         public DbSet<Tag> Tags { get; set; }
 
