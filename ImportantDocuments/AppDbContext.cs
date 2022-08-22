@@ -69,7 +69,7 @@ namespace ImportantDocuments.API
         public DbSet<Document> Documents { get; set; }
 
         public DbSet<DocumentTag> DocumentTags { get; set; }
-        public async Task Complete()
+        public async Task CompleteAsync()
         {
             await SaveChangesAsync();
         }

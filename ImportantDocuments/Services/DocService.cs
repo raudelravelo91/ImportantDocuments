@@ -1,10 +1,8 @@
-﻿using ImportantDocuments.API;
-using ImportantDocuments.API.Exceptions;
-using ImportantDocuments.API.Services;
+﻿using ImportantDocuments.Domain;
+using ImportantDocuments.Services;
 using Microsoft.EntityFrameworkCore;
-using ImportantDocuments.Domain;
 
-namespace ImportantDocuments.Services
+namespace ImportantDocuments.API.Services
 {
     public class DocService :  BaseService<Document>, IDocService
     {

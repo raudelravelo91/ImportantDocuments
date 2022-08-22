@@ -24,7 +24,7 @@ namespace ImportantDocuments.Services
                 {
                     var tagDB = await _context.Tags.AddAsync(tag);
                     _logger.LogInformation($"Tag added: {tag.Name}");
-                    await _context.Complete();
+                    await _context.CompleteAsync();
                     _logger.LogInformation($"Changes Saved in {nameof(AddTagAsync)}");
                     return tagDB.Entity;
                 }

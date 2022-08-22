@@ -21,7 +21,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         var dbSet = GetDbSet();
         dbSet.Add(obj);
 
-        await _context.Complete();
+        await _context.CompleteAsync();
         return obj;
     }
 
@@ -50,7 +50,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         var dbSet = GetDbSet();
         dbSet.Update(obj);
 
-        await _context.Complete();
+        await _context.CompleteAsync();
 
         return obj;
     }
@@ -61,7 +61,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         var obj = await GetByIdAsync(pk);
         _dbSet.Remove(obj);
 
-        await _context.Complete();
+        await _context.CompleteAsync();
 
     }
 }
