@@ -20,17 +20,14 @@ public class ApiException : Exception
     // Unique identifier so that it can be correlated in logs
     public Guid ErrorId { get; protected set; }
 
-    public ApiException(HttpStatusCode httpCode, string httpMessage, int errorCode, string errorMessage, Exception innerException) : base(errorMessage, innerException)
+    public ApiException(HttpStatusCode httpCode, string httpMessage, int errorCode, string errorMessage,
+        Exception innerException = null) : base(errorMessage, innerException)
     {
-        this.ErrorId = Guid.NewGuid();
-        this.HttpCode = httpCode;
-        this.HttpMessage = httpMessage;
-        this.ErrorCode = errorCode;
-        this.ErrorMessage = errorMessage;
-    }
-    public ApiException(HttpStatusCode httpCode, string httpMessage, int errorCode, string errorMessage)
-        : this(httpCode, httpMessage, errorCode, errorMessage, null)
-    {
+        ErrorId = Guid.NewGuid();
+        HttpCode = httpCode;
+        HttpMessage = httpMessage;
+        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
     }
 
     public override string ToString()

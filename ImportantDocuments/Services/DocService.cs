@@ -1,17 +1,16 @@
-﻿using ImportantDocuments.API;
-using ImportantDocuments.API.Exceptions;
+﻿using ImportantDocuments.Domain;
+using ImportantDocuments.Services;
 using Microsoft.EntityFrameworkCore;
-using ImportantDocuments.Domain;
 
-namespace ImportantDocuments.Services
+namespace ImportantDocuments.API.Services
 {
-    public class DocService : IDocService
+    public class DocService :  BaseService<Document>, IDocService
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
         private readonly ILogger _logger;
         private readonly ITagService _tagService;
 
-        public DocService(AppDbContext context, ILogger<DocService> logger, ITagService tagService)
+        public DocService(IAppDbContext context, ILogger<DocService> logger, ITagService tagService) : base(context)
         {
             _context = context;
             _logger = logger;
@@ -30,11 +29,9 @@ namespace ImportantDocuments.Services
                 doc.Tags.Clear();
                 doc.Tags.AddRange(tags);
 
-                var docDB = await _context.Documents.AddAsync(doc);
-                _logger.LogInformation($"Doc added: {doc.Name}");
-                await _context.SaveChangesAsync();
+                var docDB = await InsertAsync(doc);
                 _logger.LogInformation($"Changes Saved in {nameof(AddDocAsync)}");
-                return docDB.Entity;
+                return docDB;
             }
             catch (Exception ex)
             {
@@ -58,31 +55,15 @@ namespace ImportantDocuments.Services
             return tags;
         }
 
-        public async Task<IEnumerable<Document>> GetAllDocsAsync()
-        {
-            return await _context.Documents
-                    .ToListAsync();
-        }
-
         public async Task<bool> ContainsDocByIdAsync(int id)
         {
             return await _context.Documents
                 .AnyAsync(e => e.Id == id);
         }
 
-        public async Task<Document> GetDocByIdAsync(int id)
+        public override DbSet<Document> GetDbSet()
         {
-            var doc = await _context.Documents
-                .Include(doc => doc.Tags)
-                .FirstOrDefaultAsync(doc => doc.Id == id);
-            
-            if (doc == null)
-            {
-                // TODO: don't throw Exception, we should be wrapping all unhandled exceptions into our custom ones.
-                throw new Exception($"Doc not found. Doc id: {id}");
-            }
-
-            return doc;
+            return _context.Documents;
         }
     }
 }
