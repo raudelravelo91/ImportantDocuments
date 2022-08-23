@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
+using ImportantDocuments.API.Domain;
 using ImportantDocuments.API.DTOs;
 using ImportantDocuments.API.Services;
-using ImportantDocuments.Domain;
 using ImportantDocuments.DTOs;
-using ImportantDocuments.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ImportantDocuments.Controllers
+namespace ImportantDocuments.API.Controllers
 {
     [ApiController]
     [Route("api/docs")]
@@ -38,9 +37,9 @@ namespace ImportantDocuments.Controllers
         public async Task<ActionResult<Document>> GetDoc([FromRoute] int id)
         {
             var doc = await _docService.GetByIdAsync(id);
-            var docDTO = _mapper.Map<DocumentDTO>(doc);
+            var docDto = _mapper.Map<DocumentDTO>(doc);
 
-            return Ok(docDTO);
+            return Ok(docDto);
         }
 
         // POST: api/docs

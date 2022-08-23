@@ -1,18 +1,14 @@
-﻿using ImportantDocuments.API;
-using ImportantDocuments.API.Exceptions;
+﻿using ImportantDocuments.API.Domain;
 using Microsoft.EntityFrameworkCore;
-using ImportantDocuments.Domain;
 
-namespace ImportantDocuments.Services
+namespace ImportantDocuments.API.Services
 {
-    public class TagService : ITagService
+    public class TagService : BaseService<Tag>, ITagService
     {
-        private readonly IAppDbContext _context;
         private readonly ILogger _logger;
 
-        public TagService(IAppDbContext context, ILogger<TagService> logger)
+        public TagService(IAppDbContext context, ILogger<TagService> logger) : base(context, logger)
         {
-            _context = context;
             _logger = logger;
         }
 
@@ -22,11 +18,9 @@ namespace ImportantDocuments.Services
             {
                 if (!await ContainsTagByNameAsync(tag.Name))
                 {
-                    var tagDB = await _context.Tags.AddAsync(tag);
-                    _logger.LogInformation($"Tag added: {tag.Name}");
-                    await _context.CompleteAsync();
+                    var tagDb = await InsertAsync(tag);
                     _logger.LogInformation($"Changes Saved in {nameof(AddTagAsync)}");
-                    return tagDB.Entity;
+                    return tagDb;
                 }
 
                 _logger.LogInformation($"Tag not added as it already existed: {tag.Name}");
@@ -39,22 +33,15 @@ namespace ImportantDocuments.Services
             }
         }
 
-        //Only tag names, no documents
-        public async Task<IEnumerable<Tag>> GetAllTagsAsync()
-        {
-            return await _context.Tags
-                    .ToListAsync();
-        }
-
         public async Task<bool> ContainsTagByNameAsync(string name)
         {
-            return await _context.Tags
+            return await Context.Tags
                 .AnyAsync(tag => tag.Name.ToLower().Equals(name.ToLower()));
         }
 
         public async Task<bool> ContainsTagByIdAsync(int id)
         {
-            return await _context.Tags
+            return await Context.Tags
                 .AnyAsync(e => e.Id == id);
         }
 
@@ -66,7 +53,7 @@ namespace ImportantDocuments.Services
                 throw new Exception($"Tag name can not be null or empty.");
             }
 
-            var tag = await _context.Tags
+            var tag = await Context.Tags
                 .Include(tag => tag.Documents)
                 .FirstOrDefaultAsync(tag => tag.Name.ToLower().Equals(name.ToLower()));
 
@@ -79,18 +66,9 @@ namespace ImportantDocuments.Services
             return tag;
         }
 
-        public async Task<Tag> GetTagByIdAsync(int id)
+        protected override DbSet<Tag> GetDbSet()
         {
-            var tag = await _context.Tags
-                .Include(tag => tag.Documents)
-                .FirstOrDefaultAsync(tag => tag.Id == id);
-
-            if (tag == null)
-            {
-                throw new Exception($"Tag not found. Tag id: {id}");
-            }
-
-            return tag;
+            return Context.Tags;
         }
     }
 }

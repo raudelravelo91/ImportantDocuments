@@ -15,7 +15,7 @@ public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity
         _logger = logger;
     }
 
-    public abstract DbSet<TEntity> GetDbSet();
+    protected abstract DbSet<TEntity> GetDbSet();
     
     public virtual async Task<TEntity> InsertAsync(TEntity obj)
     {

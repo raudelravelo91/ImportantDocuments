@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using ImportantDocuments.API.Domain;
 using ImportantDocuments.API.DTOs;
-using ImportantDocuments.Domain;
 using ImportantDocuments.DTOs;
 
 namespace ImportantDocuments.API.Utilities
@@ -19,6 +19,8 @@ namespace ImportantDocuments.API.Utilities
             CreateMap<Document, DocumentPutDto>();
             CreateMap<DocumentPutDto, Document>();
             CreateMap<Tag, DocTagDTO>();
+            CreateMap<Tag, TagPutDTO>();
+            CreateMap<TagPutDTO, Tag>();
         }
     }
 }
