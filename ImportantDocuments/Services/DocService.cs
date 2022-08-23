@@ -1,5 +1,4 @@
-﻿using ImportantDocuments.Domain;
-using ImportantDocuments.Services;
+﻿using ImportantDocuments.API.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ImportantDocuments.API.Services
@@ -64,7 +63,7 @@ namespace ImportantDocuments.API.Services
             throw new NotImplementedException();
         }
 
-        public override DbSet<Document> GetDbSet()
+        protected override DbSet<Document> GetDbSet()
         {
             return Context.Documents;
         }

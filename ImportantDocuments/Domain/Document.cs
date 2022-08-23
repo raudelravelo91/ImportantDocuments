@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ImportantDocuments.API.Domain;
 
-namespace ImportantDocuments.Domain
+namespace ImportantDocuments.API.Domain
 {
     public class Document : BaseModel
     {

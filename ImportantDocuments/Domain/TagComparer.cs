@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace ImportantDocuments.Domain
+namespace ImportantDocuments.API.Domain
 {
     public class TagComparer : IComparer<Tag>
     {

@@ -1,4 +1,6 @@
-﻿namespace ImportantDocuments.DTOs
+﻿using ImportantDocuments.DTOs;
+
+namespace ImportantDocuments.API.DTOs
 {
     public class TagDTO
     {

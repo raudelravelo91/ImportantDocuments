@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ImportantDocuments.Domain;
-using ImportantDocuments.Services;
+﻿using AutoMapper;
+using ImportantDocuments.API.Domain;
+using ImportantDocuments.API.DTOs;
+using ImportantDocuments.API.Services;
 using ImportantDocuments.DTOs;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ImportantDocuments.Controllers
+namespace ImportantDocuments.API.Controllers
 {
     [ApiController]
     [Route("api/tags")]
@@ -25,17 +26,17 @@ namespace ImportantDocuments.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TagDTO>>> GetTags()
         {
-            var tags = await _tagService.GetAllTagsAsync();
+            var tags = await _tagService.GetAllAsync();
             var tagDTOs = tags.ToList().Select(_mapper.Map<Tag, TagReadDTO>);
                 
             return Ok(tagDTOs);
         }
 
         // GET: api/tags/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TagDTO>> GetTagById([FromRoute] int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Tag>> GetTagById([FromRoute] int id)
         {
-            var tag = await _tagService.GetTagByIdAsync(id);
+            var tag = await _tagService.GetByIdAsync(id);
             var tagDTO = _mapper.Map<TagDTO>(tag);
 
             return Ok(tagDTO);
@@ -57,28 +58,31 @@ namespace ImportantDocuments.Controllers
         public async Task<ActionResult<TagDTO>> PostTag(TagCreationDTO tagCreationDTO)
         {
             var tag = _mapper.Map<Tag>(tagCreationDTO);
-            var tagDB = await _tagService.AddTagAsync(tag);
-
-            tag = await _tagService.GetTagByIdAsync(tagDB.Id);
-            var tagReadDTO = _mapper.Map<TagReadDTO>(tag);
+            var tagDb = await _tagService.AddTagAsync(tag);
+            
+            var tagReadDTO = _mapper.Map<TagReadDTO>(tagDb);
 
             return Created($"api/tags/{tag.Id}", tagReadDTO);
         }
 
-        //// DELETE: api/Tags/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteTag(int id)
-        //{
-        //    var tag = await _context.Tags.FindAsync(id);
-        //    if (tag == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Tags.Remove(tag);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+        // DELETE: api/Tags/5
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteTag(int id)
+        {
+            await _tagService.DeleteAsync(id);
+            return Ok();
+        }
+        
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> PutTag(int id, TagPutDTO tagPutDto)
+        {
+            if (id != tagPutDto.Id)
+                return BadRequest();
+            
+            var tag = _mapper.Map<Tag>(tagPutDto);
+            var tagDb = await _tagService.UpdateAsync(tag);
+            var tagReadDto = _mapper.Map<TagDTO>(tagDb);
+            return Ok(tagReadDto);
+        }
     }
 }

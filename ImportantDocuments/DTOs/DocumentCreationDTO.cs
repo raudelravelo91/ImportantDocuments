@@ -1,6 +1,6 @@
-﻿using ImportantDocuments.Domain;
+﻿using ImportantDocuments.API.Domain;
 
-namespace ImportantDocuments.DTOs
+namespace ImportantDocuments.API.DTOs
 {
     public class DocumentCreationDTO
     {

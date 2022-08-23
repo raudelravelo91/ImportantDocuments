@@ -1,15 +1,11 @@
-﻿using ImportantDocuments;
-using Microsoft.EntityFrameworkCore;
-using ImportantDocuments.Controllers;
-using ImportantDocuments.Services;
-using System.Text.Json.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
 using ImportantDocuments.API;
 using ImportantDocuments.API.Middleware;
 using ImportantDocuments.API.Services;
 using NLog;
 using NLog.Web;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
