@@ -5,17 +5,18 @@ namespace ImportantDocuments.API.Services;
 
 public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseModel
 {
-
+    private readonly ILogger _logger;
     private readonly IAppDbContext _context;
+    protected IAppDbContext Context => _context;
 
-    public BaseService(IAppDbContext context)
+    public BaseService(IAppDbContext context, ILogger logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public abstract DbSet<TEntity> GetDbSet();
     
-
     public virtual async Task<TEntity> InsertAsync(TEntity obj)
     {
         var dbSet = GetDbSet();

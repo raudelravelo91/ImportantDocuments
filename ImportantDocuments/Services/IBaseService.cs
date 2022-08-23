@@ -11,6 +11,4 @@ public interface IBaseService<TEntity> where TEntity : BaseModel
     void Detach(TEntity obj);
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity> UpdateAsync(TEntity obj);
-    DbSet<TEntity> GetDbSet();
-    
 }

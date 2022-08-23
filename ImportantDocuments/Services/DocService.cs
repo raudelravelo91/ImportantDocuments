@@ -6,13 +6,11 @@ namespace ImportantDocuments.API.Services
 {
     public class DocService :  BaseService<Document>, IDocService
     {
-        private readonly IAppDbContext _context;
         private readonly ILogger _logger;
         private readonly ITagService _tagService;
 
-        public DocService(IAppDbContext context, ILogger<DocService> logger, ITagService tagService) : base(context)
+        public DocService(IAppDbContext context, ILogger<DocService> logger, ITagService tagService) : base(context, logger)
         {
-            _context = context;
             _logger = logger;
             _tagService = tagService;
         }
@@ -57,13 +55,18 @@ namespace ImportantDocuments.API.Services
 
         public async Task<bool> ContainsDocByIdAsync(int id)
         {
-            return await _context.Documents
+            return await Context.Documents
                 .AnyAsync(e => e.Id == id);
+        }
+
+        public Task<Document> AddTagAsync(int docId, Tag tag)
+        {
+            throw new NotImplementedException();
         }
 
         public override DbSet<Document> GetDbSet()
         {
-            return _context.Documents;
+            return Context.Documents;
         }
     }
 }
